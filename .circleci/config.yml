@@ -36,18 +36,20 @@ jobs:
           destination: reports
       - store_test_results:
           path: app/build/test-results
-
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - apk
 
   deploy:
     machine: true
     working_directory: ~/code
     steps:
+      - attach_workspace:
+          at: /code/workspace
       - run:
           name: Get ghr tool
           command: go get github.com/tcnksm/ghr
-      - run:
-          name: Upload apk to Github
-          command: command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG /code/workspace/apk || true
 
 general:
   branches:
