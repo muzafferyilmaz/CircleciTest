@@ -36,6 +36,7 @@ jobs:
           path: app/build/test-results
 
   release:
+    machine: true
     steps:
       - run:
         name: Upload apk to Github
