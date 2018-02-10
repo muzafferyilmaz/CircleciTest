@@ -2,8 +2,6 @@ version: 2
 
 defaults: &defaults
   working_directory: /tmp
-  docker:
-    - image: circleci/android:api-26-alpha
 
 jobs:
   build:
