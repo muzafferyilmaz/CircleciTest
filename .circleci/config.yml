@@ -39,3 +39,7 @@ general:
     only:
       - master
       - develop
+ 
+test:
+  override:
+    - cp -r app/build/outputs/apk $CIRCLE_ARTIFACTS
