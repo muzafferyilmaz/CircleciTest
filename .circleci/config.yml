@@ -51,7 +51,7 @@ jobs:
           command: go get github.com/tcnksm/ghr
       - run:
           name: Upload apk to Github
-          command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG /home/circleci/code/app/build/outputs/apk || true
+          command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG /home/circleci/code/app/build/outputs/apk/debug/ || true
 
 general:
   branches:
