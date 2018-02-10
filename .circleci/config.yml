@@ -42,7 +42,7 @@ jobs:
     steps:
       - run:
           name: Upload apk to Github
-          command: ./.circleci/publish.sh
+          command: .circleci/publish.sh
 
 general:
   artifacts:
