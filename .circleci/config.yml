@@ -36,13 +36,16 @@ jobs:
         path: app/build/test-results
 
   release:
-    working_directory: ~/code
     docker:
-      - image: circleci/android:api-26-alpha
+      - image: circleci/node:latest
+    working_directory: ~/code
     steps:
+      - attach_workspace:
+        at: ~/code
+      - run: go get github.com/aktau/github-release
       - run:
         name: Upload apk to Github
-        command: ./.circleci/publish.sh
+        command: github-release upload --user $CIRCLE_PROJECT_USERNAME --repo $CIRCLE_PROJECT_REPONAME --tag $CIRCLE_TAG --name $CIRCLE_PROJECT_REPONAME"."$CIRCLE_TAG"-build-"$CIRCLE_BUILD_NUM"" --file $CIRCLE_ARTIFACTS/$PROJECT_NAME-$CIRCLE_TAG
 
 general:
   artifacts:
