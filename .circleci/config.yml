@@ -53,7 +53,6 @@ jobs:
           command: go get github.com/tcnksm/ghr
       - run:
           name: Upload apk to Github
-#          command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG $CIRCLE_ARTIFACTS/ || true
           command: curl --data '{"tag_name": $CIRCLE_TAG, "body": "Release of version 1.0.0","draft": false,"prerelease": false}' https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases?access_token=$GITHUB_TOKEN
 
 general:
