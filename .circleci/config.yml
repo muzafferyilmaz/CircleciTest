@@ -1,10 +1,5 @@
 version: 2
 
-defaults: &defaults
-  working_directory: /tmp
-  docker:
-    - image: circleci/android:api-26-alpha
-
 jobs:
   build:
     working_directory: ~/code
@@ -13,7 +8,6 @@ jobs:
     machine: true
     environment:
       JVM_OPTS: -Xmx3200m
-    <<: *defaults
     steps:
       - checkout
       - restore_cache:
@@ -42,18 +36,24 @@ jobs:
           destination: reports
       - store_test_results:
           path: app/build/test-results
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - apk
+
 
   deploy:
     machine: true
     working_directory: ~/code
-    <<: *defaults
     steps:
+      - attach_workspace:
+          at: /code/workspace
       - run:
           name: Get ghr tool
           command: go get github.com/tcnksm/ghr
       - run:
           name: Upload apk to Github
-          command: curl --data '{"tag_name": $CIRCLE_TAG, "body": "Release of version 1.0.0","draft": false,"prerelease": false}' https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases?access_token=$GITHUB_TOKEN
+          command: command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG /code/workspace/apk || true
 
 general:
   branches:
