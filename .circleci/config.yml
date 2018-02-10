@@ -30,6 +30,8 @@ jobs:
           path: app/build/test-results
 
 general:
+  artifacts:
+     - app/build/outputs/apk/
   branches:
     only:
      - master
