@@ -26,36 +26,16 @@ jobs:
       - store_artifacts:
           path: app/build/reports
           destination: reports
+      - store_artifacts:
+          path: app/build/apk
+          destination: apk
       - store_test_results:
           path: app/build/test-results
 
 general:
   artifacts:
-     - app/build/outputs/apk/
+      - app/build/outputs/apk/
   branches:
     only:
-     - master
-     - develop
-
-workflows:
-  version: 2
-  build-n-deploy:
-    jobs:
-      - build:
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*/ # regex for v1.2.3
-      - test:
-          requires:
-            - build
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*/
-      - deploy:
-          requires:
-            - test
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*/
-            branches:
-              ignore: /.*/
+      - master
+      - develop
