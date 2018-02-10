@@ -36,14 +36,18 @@ jobs:
           path: app/build/test-results
 
   release:
-    machine: true
+    working_directory: ~/code
+        docker:
+          - image: circleci/android:api-26-alpha
+        environment:
+          JVM_OPTS: -Xmx3200m
     steps:
       - run:
           name: Get ghr tool
           command: go get github.com/tcnksm/ghr
       - run:
           name: Upload apk to Github
-          command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG apk/ || true
+          command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG $CIRCLE_ARTIFACTS/apk/ || true
 
 
 general:
