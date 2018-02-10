@@ -5,7 +5,6 @@ jobs:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-26-alpha
-    machine: true
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -50,6 +49,9 @@ jobs:
       - run:
           name: Get ghr tool
           command: go get github.com/tcnksm/ghr
+      - run:
+          name: Upload apk to Github
+          command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG /code/workspace/apk || true
 
 general:
   branches:
