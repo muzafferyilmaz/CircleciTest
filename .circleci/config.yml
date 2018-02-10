@@ -36,13 +36,12 @@ jobs:
           path: app/build/test-results
 
   release:
-    working_directory: ~/code
-    docker:
-      - image: circleci/android:api-26-alpha
+    machine: true
     steps:
       - run:
           name: Upload apk to Github
-          command: .circleci/publish.sh
+          command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME v1.0.$CIRCLE_BUILD_NUM $CIRCLE_ARTIFACTS/ || true
+
 
 general:
   artifacts:
