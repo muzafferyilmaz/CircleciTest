@@ -39,6 +39,9 @@ jobs:
     machine: true
     steps:
       - run:
+          name: Get ghr tool
+          command: go get github.com/tcnksm/ghr
+      - run:
           name: Upload apk to Github
           command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME v1.0.$CIRCLE_BUILD_NUM $CIRCLE_ARTIFACTS/ || true
 
