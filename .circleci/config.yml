@@ -48,7 +48,7 @@ jobs:
           at: /home/circleci/code/app/build/outputs/apk
       - run:
           name: Rename debug.apk
-          command: mv debug/debug.apk debug/$CIRCLE_TAG-beta.apk
+          command: mv /home/circleci/code/app/build/outputs/apk/debug/debug.apk /home/circleci/code/app/build/outputs/apk/debug/{{$CIRCLE_TAG}}-beta.apk
       - run:
           name: Get ghr tool
           command: go get github.com/tcnksm/ghr
