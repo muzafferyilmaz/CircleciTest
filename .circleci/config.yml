@@ -41,20 +41,21 @@ jobs:
             - debug
 
   deploy:
-    machine: true
     working_directory: ~/code
+    docker:
+      - image: circleci/python:2.7
     steps:
       - attach_workspace:
           at: /home/circleci/code/app/build/outputs/apk
       - run:
           name: Rename debug apk
-          command: mv /home/circleci/code/app/build/outputs/apk/debug/app-debug.apk /home/circleci/code/app/build/outputs/apk/debug/$CIRCLE_TAG-beta.apk
+          command: mv /home/circleci/code/app/build/outputs/apk/debug/app-debug.apk /home/circleci/code/app/build/outputs/apk/debug/$CIRCLE_TAG.apk
       - run:
-          name: Get ghr tool
-          command: go get github.com/tcnksm/ghr
+          name: Install AWS cli
+          command: sudo pip install awscli
       - run:
-          name: Upload apk to Github
-          command: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG /home/circleci/code/app/build/outputs/apk/debug/ || true
+          name: Deploy to amazonS3
+          command: aws s3 cp /home/circleci/code/app/build/outputs/apk/debug/$CIRCLE_TAG.apk s3://circleci-deneme/zero/
 
 general:
   branches:
@@ -69,7 +70,7 @@ workflows:
       - build:
           filters:
             tags:
-              only: /v[0-9]+(\.[0-9]+)*/ # regex for v1.2.3
+              only: /v[0-9]+(\.[0-9]+)*.\w+/ # regex for v1.2.3 or v1.2.3-postfix
 #      - test:
 #          requires:
 #            - build
